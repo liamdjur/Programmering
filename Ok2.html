@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kapitel 1 Lektion 2</title>
+</head>
+<body>
+  <script src="http://koda.nu/simple.js">
+
+  // 1. Skapa variabler för första figuren
+ /* var x = 120;
+  var y = 180;
+  var storlek = 100;
+  var color = "red";
+*/
+  // Rita första figuren med variabler
+  //circle(x, y, storlek, color);
+
+  // 2. Skapa ett objekt för andra figuren (player)
+ // var player = { x: 600, y: 400, size: 30, color: "green" };
+
+  // Rita andra figuren med objektets egenskaper
+ // circle(player.x, player.y, player.size, player.color);
+
+
+
+
+
+
+   // line(270, 500, 200, 450, 10)
+// objekt för att bygga en sträckgubbe
+   var spelare = {
+    x: 825,
+    y: 100,
+
+   }
+
+   // skapa olika funktioner så att man kan bilda en sträck gubbe
+   line(spelare.x, spelare.y + 100, spelare.x, spelare.y + 300, 10, "red")
+   ring(spelare.x, spelare.y + 50, 50, 10, "red")
+   rectangle(spelare.x - 75, spelare.y + 150, 150, 10, "red")
+   line(spelare.x, spelare.y + 300, spelare.x - 75, spelare.y + 375, 10, "red")
+   line(spelare.x, spelare.y + 300, spelare.x + 75, spelare.y + 375, 10, "red")
+
+
+   // skapa ett object för att använda de till en cirkel
+   var objectring = {
+
+    x: 400,
+    y: 500,
+    color: "black"
+   }
+   // gör en funktion för cirklen så att det kan visas
+   ring(objectring.x, objectring.y, 50, 10, objectring.color)
+
+
+   // skapa ett object för en rektangel
+   var objectrectangle = {
+    x: 400,
+    y: 100,
+    color: "green"
+   }
+   // skapa en funktion för en rektangel så att det visas 
+   rectangle(objectrectangle.x, objectrectangle.y, 150, 100, objectrectangle.color)
+
+  </script>
+</body>
+</html>
