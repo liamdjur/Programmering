@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://koda.nu/simple.js">
+
+
+
+        var spelare = {
+            x: 100, 
+            y: 100, 
+            radius: 50,
+            speed: 5,
+            color: "blue"
+        }
+
+
+        function update() {
+            clearScreen();
+            circle(spelare.x, spelare.y, spelare.radius, spelare.color)
+            spelare.speed = spelare.speed + 0.98;
+           // console.log(spelare.speed);
+            spelare.y = spelare.y + spelare.speed;
+
+            if (spelare.y > totalHeight - 40) {
+                spelare.y = totalHeight - 40;
+            } 
+
+        }
+
+        
+
+    </script>
+</body>
+</html>
