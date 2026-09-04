@@ -11,22 +11,57 @@
 
 
         var player  = {
-            x: 50,
+            x: 500,
             y: 50,
             size: 40,
             color: mixColor(random(255), random(255), random(255)),
             speedX: 10,  // rör sig framåt i x-led
-            speedY: 25 // hastighet i y-led, kan röra sig diagonalt eller upp eller ner.
+            speedY: 0 ,    // hastighet i y-led, kan röra sig diagonalt eller upp eller ner.
+            directionx: -3,  // ändrar riktning utan att ändra hastigheten för x
+            directiony: 6   // ändrar riktning utan att ändra hastigheten för y
+        }
+
+        var enemy = {
+            x: 800,
+            y: 500,
+            size: 60,
+            color: mixColor(random(255), random(255), random(255)),
+            speedX: 10,  // rör sig framåt i x-led
+            speedY: 0 ,    // hastighet i y-led, kan röra sig diagonalt eller upp eller ner.
+            directionx: 3,  // ändrar riktning utan att ändra hastigheten för x
+            directiony: 6   // ändrar riktning utan att ändra hastigheten för y
         }
 
         function update() {
             clearScreen();
             circle(player.x, player.y, player.size, player.color);
-            circle(player.x + 800, player.y + 200, player.size, player.color);
-            player.x = player.x + player.speedX;
-            player.y = player.y + player.speedY;
+
+            player.x = player.x + player.speedX * player.directionx;
+            
+            player.y = player.y + player.speedY * player.directiony;
             player.size++;
             player.color = mixColor(random(255), random(255), random(255));
+
+            console.log(player.x)
+
+            rectangle(enemy.x, enemy.y, enemy.size, enemy.size, enemy.color);
+
+            // enemy.x = enemy.x + enemy.speedX * enemy.directionx;
+            
+                setTimeout(() => {
+                    enemy.x = enemy.x + mouse.x / 100
+                } , 1000);
+
+
+            enemy.y = enemy.y + enemy.speedY * enemy.directiony;
+
+            if (enemy.x >= totalWidth) {
+                enemy.x = 0;
+            }
+
+            if (enemy.y >= totalHeight) {
+                enemy.y = 0;
+            }
 
 
             // Om spelaren går  skärmens bredd, återställ positionen till 0
@@ -43,6 +78,15 @@
             player.size = 40;
         }
 
+        // om player går utanför skärmen på vänstersidan så återställ cirklen till totala bredden av skärmen
+        if (player.x < 0) {
+            player.x = totalWidth;
+        }
+
+        // om player går utanför skärmen på toppen så återställ cirklen till totala höjden av skärmen
+        if (player.y < 0) {
+            player.y = totalHeight;
+        }
 
 
     }
