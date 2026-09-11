@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://koda.nu/simple.js">
+
+        var color = "blue";
+        var storlek = 30;
+
+
+        var smile = {
+            x: random(100, totalWidth),
+            y: random(120, totalHeight),
+            color: mixColor(random(255), random(255), random(255)),
+            mun: 50,
+            Ok: 30
+        }
+
+
+/*
+        rectangle(200,200,400,250, "blue") //foundation till flagga
+        line(400, 200, 400, 450, 40, "yellow") // mitten linjen vertikalt
+        line(200, 325, 600, 325, 40, "yellow") // mitten linjen horisontellt
+
+        text(400, 500, 40, "Sverige", "black") // texten
+
+        rectangle(200, 175, 10, 500, "grey") // flaggstången
+
+        circle(205, 180, 15, "goldenrod") // toppen på flaggstången
+
+         // ring(800, 300, 150, 20, color)
+        ring(800, 430, 170, storlek, color)
+
+*/
+        circle(smile.x, smile.y, 100, smile.color) // huvudet
+        circle(smile.x - 50, smile.y - 30, 20, "black") // öga vänster
+        circle(smile.x + 50, smile.y - 50, 20, "black") // öga höger
+        rectangle(smile.x - 70, smile.y + 40, 150, 20, "black") // munnen
+        text(smile.x - 40, smile.y - 110, smile.Ok, "Son", "black") // texten
+        
+
+
+        
+    </script>
+</body>
+</html>

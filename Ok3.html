@@ -7,9 +7,25 @@
 </head>
 <body>
     <script src="http://koda.nu/simple.js">
+        /*
         circle(random(800), random(500), random(300), mixColor(random(255), random(255), random(255)))
         circle(random(800), random(500), random(300), mixColor(random(255), random(255), random(255)))
         circle(random(800), random(500), random(300), mixColor(random(255), random(255), random(255)))
+        */
+
+        rectangle(random(800), random(800), random(800), random(300), mixColor(random(255), random(255), random(255)))
+        rectangle(random(800), random(800), random(800), random(300), mixColor(random(255), random(255), random(255)))
+        rectangle(random(800), random(800), random(800), random(300), mixColor(random(255), random(255), random(255)))
+        text(300, 300, 40, random(1, 6), mixColor(random(255), random(255), random(255)))
+
+        var sun = {
+
+            x: random(800),
+            y: random(500),
+            withd: 200
+        }
+
+        circle(sun.x, sun.y, sun.withd, "yellow")
     </script>
 </body>
 </html>
