@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://koda.nu/simple.js">
+
+        var player = {
+            x: 400,
+            y: 300,
+            size: 40, 
+            color: "black",
+            speed: 10
+        }
+
+        var x = 800;
+        var y = 200;
+        var storlek = 50; 
+
+        function update() {
+            clearScreen();
+            circle(player.x, player.y, player.size, player.color);
+            circle(x, y, storlek, "red");
+
+
+            // rör spelaren med WASD
+            if (keyboard.d) {
+                player.x = player.x + player.speed;
+                console.log("Player right")
+            }
+
+            if (keyboard.a ) {
+                player.x = player.x - player.speed;
+                console.log("player left")
+            }
+
+            if (keyboard.w) {
+                player.y = player.y - player.speed;
+                console.log("player up")
+            }
+
+            if (keyboard.s) {
+                player.y = player.y + player.speed;
+                console.log("Player down")
+            }
+
+
+            // låter inte spelaren gå utanför skärmen
+            if (player.x + player.size > totalWidth) {
+                player.x = totalWidth - player.size;
+            }
+
+            if (player.x - player.size < 0) {
+                player.x = 0 + player.size;
+            }
+
+            if (player.y + player.size > totalHeight){
+                player.y = totalHeight - player.size;
+            }
+
+            if (player.y - player.size < 0) {
+                player.y = 0 + player.size;
+            }
+            // temporärt sätt att öka hastigheten när man håller nere mellanslag
+            if (keyboard.space) {
+               player.speed = player.speed * 2
+               player.color = mixColor(random(255), random(255), random(255))
+            } else {
+                player.speed = 10; 
+            }
+
+            if (player.speed > 70) {
+                player.speed = 70;
+            }
+            text(20, 20, 20, "X: " + player.x + ", Y: " + player.y, "black");
+
+
+            if (player.x + player.size * 2.3 > x) {
+                if (player.y - player.size * 2.3 < y) {
+                text(20, 50, 20, "kollision", "gold");
+                }
+            } 
+        }
+
+
+    </script>
+</body>
+</html>
