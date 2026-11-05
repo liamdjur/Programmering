@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://koda.nu/simple.js">
+
+    var player = {
+        x: 100,
+         y: 300,
+        size: 25, 
+        color: "green",
+        speed: 3
+    }
+
+        var enemy = {
+            x: 400,
+            y: 300, 
+            speed: 2
+        }
+
+        var poang = 0;
+        var senastePoang = 0;
+        var pumpkins = []  
+
+
+    for (var i = 0; i < 5; i++) {
+    pumpkins.push({x: random(0, totalWidth), y: random(0, totalHeight), size: 10, color: "orange"})
+    }
+
+    function pumpKin(x,y,size,color) {
+    circle(x,y,size,color)
+    }
+
+
+function drawEnemy() {
+    circle(enemy.x + 4, enemy.y + 5, 27, "#200000");
+
+    triangle(enemy.x - 18, enemy.y - 12,enemy.x - 25, enemy.y - 32,enemy.x - 8, enemy.y - 20,"#777777");
+    triangle(enemy.x + 18, enemy.y - 12,enemy.x + 25, enemy.y - 32,enemy.x + 8, enemy.y - 20,"#777777");
+
+    circle(enemy.x, enemy.y, 24, "#240000");
+    circle(enemy.x, enemy.y, 20, "#500000");
+
+    circle(enemy.x - 13, enemy.y + 12, 5, "#990000");
+    circle(enemy.x + 14, enemy.y + 10, 4, "#990000");
+
+    circle(enemy.x - 8, enemy.y - 5, 8, "#ff0000");
+    circle(enemy.x + 8, enemy.y - 5, 8, "#ff0000");
+
+    circle(enemy.x - 8, enemy.y - 5, 3, "#000000");
+    circle(enemy.x + 8, enemy.y - 5, 3, "#000000");
+
+    rectangle(enemy.x - 11, enemy.y + 7, 22, 10, "#100000");
+
+    triangle( enemy.x - 9, enemy.y + 7, enemy.x - 4, enemy.y + 7, enemy.x - 7, enemy.y + 13,"#ffffff");
+
+    triangle(enemy.x, enemy.y + 7, enemy.x + 5, enemy.y + 7, enemy.x + 2, enemy.y + 13,"#ffffff" );
+
+    triangle( enemy.x + 5, enemy.y + 7, enemy.x + 10, enemy.y + 7, enemy.x + 8, enemy.y + 13,"#ffffff" );
+    rectangle(enemy.x - 2, enemy.y + 17, 4, 8, "#ff0000");
+}
+
+    function touch(a,b) {
+       return distance(a,b) < 45;
+    }
+
+function update() {
+    clearScreen();
+    rectangle(0, 0, totalWidth, totalHeight, "#050508");
+
+    circle(80, 120, 35, "#250006");
+    circle(300, 400, 45, "#300008");
+    circle(550, 180, 30, "#250006");
+    circle(700, 500, 50, "#200004");
+
+    line(0, 100, totalWidth, 100, "#310006");
+    line(0, totalHeight - 60, totalWidth, totalHeight - 60, "#310006");
+
+    text(20, 35, 24, "NIGHTMARE", "#8b0000");
+    text(20, 70, 20, "Pumpor: " + poang + "/5", "#ff2020");
+
+    drawEnemy();
+
+    circle(player.x, player.y, player.size, "#164d16");
+    circle(player.x - 10, player.y - 2, 5, "#ff0000");
+    circle(player.x + 10, player.y - 2, 5, "#ff0000");
+
+    if (keyboard.w) player.y -= player.speed;
+    if (keyboard.s) player.y += player.speed;
+    if (keyboard.a) player.x -= player.speed;
+    if (keyboard.d) player.x += player.speed;
+
+    if (enemy.x < player.x) enemy.x += enemy.speed;
+    if (enemy.x > player.x) enemy.x -= enemy.speed;
+    if (enemy.y < player.y) enemy.y += enemy.speed;
+    if (enemy.y > player.y) enemy.y -= enemy.speed;
+
+    if (poang > senastePoang) {
+        player.speed++;
+        senastePoang++;
+    }
+
+    for (var i = 0; i < pumpkins.length; i++) {
+        pumpKin(
+            pumpkins[i].x,
+            pumpkins[i].y,
+            pumpkins[i].size,
+            pumpkins[i].color
+        );
+
+        if (distance(player.x, player.y, pumpkins[i].x, pumpkins[i].y) < 20) {
+            poang++;
+            pumpkins.splice(i, 1);
+            i--;
+        }
+    }
+
+    if (touch(enemy, player)) {
+        rectangle(0, 0, totalWidth, totalHeight, "#180000");
+        text(totalWidth / 2 - 150, totalHeight / 2, 45,"GAME OVER", "#ff0000");
+        stopUpdate();
+    }
+
+    if (poang >= 5) {
+        text(totalWidth / 2 - 100, totalHeight / 2, 45,
+             "YOU WIN!", "#00ff00");
+        stopUpdate();
+    }
+}
+
+
+
+    </script>
+</body>
+</html>
