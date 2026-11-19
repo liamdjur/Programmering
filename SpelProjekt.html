@@ -1,4 +1,15 @@
-// ===== MIN PROJEKTPLAN =====
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script src="https://koda.nu/simple.js"></script>
+    <script>
+
+ // ===== MIN PROJEKTPLAN =====
 // Spelidé: Jag ska skapa ett spel som flappy bird där man klickar eller klickar på SPACE för att hoppa och hoppa igenom rören och när man hoppar igenom ett rör så får man ett poäng och så fortsätter det så tills du dör.
 
 // --- SAKER JAG VILL ÖVA PÅ (utifrån tidigare feedback) ---
@@ -49,15 +60,6 @@
 // Så ökar poängen med 1
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <script src="http://koda.nu/simple.js">
 
         // skapa en fågel med hjälp av ett objekt där man kan lägga in många egenskaper.
         var Bird = {
@@ -65,41 +67,130 @@
             y: 350,
             width: 50,
             speed: 0,
-            gravity: 0.8,
-            jumpHeight: -10
+            gravity: 0.45,
+            jumpHeight: -5
         };
+
+        var gameOver = false;
+        var score = 0; 
+        var pipes = []; // array för att hålla alla rör
+        pipes.push({x: 400, gap: 150,  topHeight: Math.floor(Math.random() * (250 - 50 + 1)) + 50, width: 60, scored: false}); // skapa ett rör som är randomiserat med hjälp av Math.floor och Math.random
 
         // använd Bird objektet i en funktion som ritar fåglen på skärmen
        function drawBird() {
         circle(Bird.x, Bird.y, Bird.width / 2, "yellow");
         }
 
-        function drawPipes() {
-            
+       function drawPipes() {
+        for (var i = 0; i < pipes.length; i++) {
+        var pipe = pipes[i];
+
+        if (pipe.x + pipe.width < Bird.x && !pipe.scored) {
+         score++;
+         pipe.scored = true;
         }
 
+        // Övre röret
+        rectangle(pipe.x + 5, 0, pipe.width - 10, pipe.topHeight, "#36b536");
+        rectangle(pipe.x, pipe.topHeight - 25, pipe.width, 25, "#228b22");
+
+        // Nedre röret
+        var bottomY = pipe.topHeight + pipe.gap;
+
+        rectangle(pipe.x + 5, bottomY, pipe.width - 10, totalHeight - bottomY, "#36b536");
+        rectangle(pipe.x, bottomY, pipe.width, 25, "#228b22");
+
+        pipe.x -= 2; // flytta röret åt vänster
+    }
+    // skapar en loop som ritar rören 
+        if (pipes[pipes.length - 1].x < totalWidth - 350) {
+        createPipe();
+        }
+
+        // glr så att rören utanför skörmen försvinner och inte tar upp minne
+        for (var i = pipes.length - 1; i >= 0; i--) {
+        if (pipes[i].x < -pipes[i].width) {
+        pipes.splice(i, 1);
+        }
+    }
+}
+    // skapa rören 
+    function createPipe() {
+    pipes.push({
+        x: totalWidth,
+        gap: 150,
+        topHeight: Math.floor(Math.random() * (400 - 50 + 1)) + 50,
+        width: 60,
+        scored: false
+        });
+    }
+
+    //en funktion som kollar om fåglen har krockat med röret
+    function pipeCollision() {
+        for (var i = 0; i < pipes.length; i++) {
+            var pipe = pipes[i]; 
+
+            if (Bird.x + Bird.width / 2 > pipe.x && Bird.x - Bird.width / 2 < pipe.x + pipe.width) {
+                if (Bird.y - Bird.width / 2 < pipe.topHeight || Bird.y + Bird.width / 2 > pipe.topHeight + pipe.gap) {
+                    gameOver = true;
+                }
+            }
+        }
+    }
+
         // bakrunden rör sig år vänster med hjälp av x-- vilket minskar ett värde så att de går åt vänster konstant.
-        var x = 0; 
+    var backgroundX = 0;
+        
         function update() {
             clearScreen();
-            picture(x, 0, "https://img.magnific.com/free-vector/pixel-art-city-day-background-with-retro-buildings_107791-35592.jpg?semt=ais_hybrid&w=740&q=80", totalWidth * 2, totalHeight)
-            x--; 
-            drawBird();
+            picture(backgroundX, 0, "https://img.magnific.com/free-vector/pixel-art-city-day-background-with-retro-buildings_107791-35592.jpg?semt=ais_hybrid&w=740&q=80", totalWidth, totalHeight);
+            picture(backgroundX + totalWidth, 0, "https://img.magnific.com/free-vector/pixel-art-city-day-background-with-retro-buildings_107791-35592.jpg?semt=ais_hybrid&w=740&q=80", totalWidth, totalHeight);
+            backgroundX -= 2; // flytta bakgrunden åt vänster
+            if (backgroundX <= -totalWidth) {
+            backgroundX = 0;
+        }
+
+            // anropa funktionen som ritar rören
+            drawPipes();
+
             // gör så att fåglen faller automatiskt neråt
             Bird.speed += Bird.gravity; 
             Bird.y += Bird.speed;
+            drawBird();
+
+            // anropa funktionen som kollar efter krock med rören
+            pipeCollision();
+
+            // visa ditt score efter varhe rör du hoppat igenom
+            text(20, 40, 30, "Score: " + score, "white");
+
             // använd space för att hoppa
             if (keyboard.space) {
                 Bird.speed = Bird.jumpHeight;
             }
+
             // använd musen för att hoppa
-            if (mouse.down) {
+            if (mouse.left) {
                 Bird.speed = Bird.jumpHeight;
             }
+
             // gör så att fåglen inte kan gå utanför skärmen
             if (Bird.y < Bird.width / 2 ) {
                 Bird.y = Bird.width / 2;
                 Bird.y = Bird.speed = 0; 
+                gameOver = true;
+            }
+
+            // gör så att fåglen inte kan gå utanför skärmen
+            if (Bird.y > totalHeight - Bird.width / 2) {
+                Bird.y = totalHeight - Bird.width / 2; 
+                Bird.y = Bird.speed = 0;
+                gameOver = true;
+            }
+            // om gameOver är true så kommer det game over text och stannar spelet.
+            if (gameOver) {
+                text(totalWidth / 2, totalHeight / 2, 50, "Game Over", "red");
+                stopUpdate();
             }
         }
     </script>
