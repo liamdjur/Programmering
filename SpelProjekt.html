@@ -1,0 +1,107 @@
+// ===== MIN PROJEKTPLAN =====
+// Spelidé: Jag ska skapa ett spel som flappy bird där man klickar eller klickar på SPACE för att hoppa och hoppa igenom rören och när man hoppar igenom ett rör så får man ett poäng och så fortsätter det så tills du dör.
+
+// --- SAKER JAG VILL ÖVA PÅ (utifrån tidigare feedback) ---
+// (Vad har du fått feedback om tidigare som du vill bli bättre på,
+//  eller något du aldrig hann klart med? Skriv in det här och se till
+//  att du övar på det i ditt spel under projektet.)
+// 1. bättre på att skapa loopar och if satser
+
+// --- MITT KRAV (måste finnas) ---
+// Antal spelare: 1
+// Antal fiender/hinder: oändligt
+// Mål (hur vinner/klarar man spelet?): Samla så många poäng som möjligt genom att hoppa igenom rören.
+// Förlustvillkor (hur förlorar man?): Man förlorar om man krockar med ett rör eller slår i marken.
+
+// --- MIN REKOMMENDATION (bör finnas) ---
+// 1. hinder
+// 2. fågel (spelaren)
+// 3. poängräknare
+// 4. bakrund
+
+// --- MIN UTMANING (kan finnas, om tid finns) ---
+// 1. fixa buggar som uppkommer
+// 2. få det se hyvsat bra ut
+
+// --- FÖRBÄTTRINGAR ATT GÖRA SEN ---
+// (Lägg till fler idéer här under hela projektet.
+//  Känner du dig klar med allt ovan? Kolla den här listan och börja på nästa.)
+//
+
+
+// pssuedo 1: 
+// När spelet uppdateras:
+// flytta spelaren åt höger med en konstant hastighet
+// flytta hinder bakom spelaren så att det kommer nya hinder hela tiden
+// OM spelaren krockar så stannar spelet och visar dina poäng
+// rita spelaren och hindren på skärmen
+
+// pssuedo 2:
+// När spelaren hoppar: 
+// OM spelaren trycker på SPACE eller klickar med musen
+// Så hoppar spelaren eller åker uppåt 
+// OM spelaren inte hoppar och krockar med rören eller marken
+// Stanna spelet och visa game over
+
+//Psuedo 3: 
+// När spelaren hoppar igenom ett rör:
+// OM spelaren hoppar igenom ett rör
+// Så ökar poängen med 1
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://koda.nu/simple.js">
+
+        // skapa en fågel med hjälp av ett objekt där man kan lägga in många egenskaper.
+        var Bird = {
+            x: 100,
+            y: 350,
+            width: 50,
+            speed: 0,
+            gravity: 0.8,
+            jumpHeight: -10
+        };
+
+        // använd Bird objektet i en funktion som ritar fåglen på skärmen
+       function drawBird() {
+        circle(Bird.x, Bird.y, Bird.width / 2, "yellow");
+        }
+
+        function drawPipes() {
+            
+        }
+
+        // bakrunden rör sig år vänster med hjälp av x-- vilket minskar ett värde så att de går åt vänster konstant.
+        var x = 0; 
+        function update() {
+            clearScreen();
+            picture(x, 0, "https://img.magnific.com/free-vector/pixel-art-city-day-background-with-retro-buildings_107791-35592.jpg?semt=ais_hybrid&w=740&q=80", totalWidth * 2, totalHeight)
+            x--; 
+            drawBird();
+            // gör så att fåglen faller automatiskt neråt
+            Bird.speed += Bird.gravity; 
+            Bird.y += Bird.speed;
+            // använd space för att hoppa
+            if (keyboard.space) {
+                Bird.speed = Bird.jumpHeight;
+            }
+            // använd musen för att hoppa
+            if (mouse.down) {
+                Bird.speed = Bird.jumpHeight;
+            }
+            // gör så att fåglen inte kan gå utanför skärmen
+            if (Bird.y < Bird.width / 2 ) {
+                Bird.y = Bird.width / 2;
+                Bird.y = Bird.speed = 0; 
+            }
+        }
+    </script>
+</body>
+</html>
