@@ -143,7 +143,7 @@
 
         // bakrunden rör sig år vänster med hjälp av x-- vilket minskar ett värde så att de går åt vänster konstant.
     var backgroundX = 0;
-        
+
         function update() {
             clearScreen();
             // skapa en start där det står "PRESS SPACE / LEFT CLICK TO START!" och när man trycker på space eller vänsterklick så startar spelet.
@@ -203,14 +203,13 @@
                 Bird.y = Bird.speed = 0;
                 gameOver = true;
             }
+
             // om gameOver är true så kommer det game over text och stannar spelet.
             if (gameOver) {
                 text(600, 500, 50, "Game Over", "red");
                 text(600, 550,20, "Press CTRL + R to restart.", "white");
                 stopUpdate();
             }
-
-
 
         }
     </script>
