@@ -68,7 +68,7 @@
             width: 50,
             speed: 0,
             gravity: 0.45,
-            jumpHeight: -5
+            jumpHeight: -6
         };
 
         var gameStarted = false; // variabel för att hålla koll på om spelet har startat
@@ -79,10 +79,23 @@
         var pipes = []; // array för att hålla alla rör
         pipes.push({x: 400, gap: 150,  topHeight: Math.floor(Math.random() * (250 - 50 + 1)) + 50, width: 60, scored: false}); // skapa ett rör som är randomiserat med hjälp av Math.floor och Math.random
 
-        // använd Bird objektet i en funktion som ritar fåglen på skärmen
-       function drawBird() {
-         circle(Bird.x, Bird.y, Bird.width / 2, "yellow");
-        }
+    // använd Bird objektet i en funktion som ritar fåglen på skärmen
+    function drawBird() {
+
+    // Kropp
+    circle(Bird.x, Bird.y, 25, "yellow");
+
+    // Vinge
+    circle(Bird.x - 5, Bird.y + 5, 12, "orange");
+
+    // Öga
+    circle(Bird.x + 10, Bird.y - 8, 7, "white");
+    circle(Bird.x + 12, Bird.y - 8, 3, "black");
+
+    // Näbb
+    triangle(Bird.x + 20, Bird.y - 5, Bird.x + 38, Bird.y, Bird.x + 20, Bird.y + 7, "orange");
+
+    }
 
        function drawPipes() {
         for (var i = 0; i < pipes.length; i++) {
@@ -105,6 +118,7 @@
 
         pipe.x -= 3; // flytta röret åt vänster
     }
+
     // skapar en loop som ritar rören 
         if (pipes[pipes.length - 1].x < totalWidth - 350) {
         createPipe();
