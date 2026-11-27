@@ -70,6 +70,8 @@
             gravity: 0.45,
             jumpHeight: -6
         };
+        // array for mynt
+        var coins = []
 
         var gameStarted = false; // variabel för att hålla koll på om spelet har startat
 
@@ -97,13 +99,57 @@
 
     }
 
-       function drawPipes() {
-        for (var i = 0; i < pipes.length; i++) {
+    // funktion flr att skapa mynt mellan rören
+    function createCoins(pipe) {
+        coins.push({
+            x: pipe.x + pipe.width / 2,
+            y: pipe.topHeight + pipe.gap / 2,
+            radius: 12,
+            collected: false
+        });     
+    }
+
+    // rita mynten på skärmen
+ function drawCoins() {
+    for (var i = 0; i < coins.length; i++) {
+        var coin = coins[i];
+
+        coin.x -= 3;
+
+        if (!coin.collected) {
+            // Kolla om fågeln samlar myntet
+            var dx = Bird.x - coin.x;
+            var dy = Bird.y - coin.y;
+            var distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < Bird.width / 2 + coin.radius) {
+                coin.collected = true;
+                score += 5;
+            }
+
+            if (!coin.collected) {
+                circle(coin.x, coin.y, coin.radius + 3, "orange");
+                circle(coin.x, coin.y, coin.radius, "yellow");
+                text(coin.x - 4, coin.y + 5, 15, "$", "orange");
+            }
+        }
+    }
+
+    // Ta bort insamlade mynt och mynt utanför skärmen
+    for (var i = coins.length - 1; i >= 0; i--) {
+        if (coins[i].collected || coins[i].x < -30) {
+            coins.splice(i, 1);
+        }
+    }
+}
+
+function drawPipes() {
+    for (var i = 0; i < pipes.length; i++) {
         var pipe = pipes[i];
 
         if (pipe.x + pipe.width < Bird.x && !pipe.scored) {
-         score++;
-         pipe.scored = true;
+            score++;
+            pipe.scored = true;
         }
 
         // Övre röret
@@ -116,31 +162,38 @@
         rectangle(pipe.x + 5, bottomY, pipe.width - 10, totalHeight - bottomY, "#36b536");
         rectangle(pipe.x, bottomY, pipe.width, 25, "#228b22");
 
-        pipe.x -= 3; // flytta röret åt vänster
+        pipe.x -= 3;
     }
 
-    // skapar en loop som ritar rören 
-        if (pipes[pipes.length - 1].x < totalWidth - 350) {
-        createPipe();
-        }
+    // Skapa nya rör med rätt avstånd
+    if (pipes.length > 0) {
+        var lastPipe = pipes[pipes.length - 1];
 
-        // glr så att rören utanför skörmen försvinner och inte tar upp minne
-        for (var i = pipes.length - 1; i >= 0; i--) {
+        if (lastPipe.x < totalWidth - 350) {
+            createPipe();
+        }
+    }
+
+    // Ta bort gamla rör
+    for (var i = pipes.length - 1; i >= 0; i--) {
         if (pipes[i].x < -pipes[i].width) {
-        pipes.splice(i, 1);
+            pipes.splice(i, 1);
         }
     }
 }
     // skapa rören 
-    function createPipe() {
-    pipes.push({
+function createPipe() {
+    var newPipe = {
         x: totalWidth,
         gap: 150,
-        topHeight: Math.floor(Math.random() * (450 - 50 + 1)) + 50,
+        topHeight: Math.floor(Math.random() * (250 - 50 + 1)) + 50,
         width: 60,
         scored: false
-        });
-    }
+    };
+
+    pipes.push(newPipe);
+    createCoins(newPipe);
+}
 
     //en funktion som kollar om fåglen har krockat med röret
     function pipeCollision() {
@@ -177,8 +230,11 @@
             backgroundX = 0;
         }
 
+
             // anropa funktionen som ritar rören
             drawPipes();
+
+            drawCoins();
 
             // gör så att fåglen faller automatiskt neråt
             Bird.speed += Bird.gravity; 
